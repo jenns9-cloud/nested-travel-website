@@ -1,37 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Nested Travel</title>
-    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
-    <style id="expo-reset">
-      /* These styles make the body full-height */
-      html,
-      body {
-        height: 100%;
-      }
-      /* These styles disable body scrolling if you are using <ScrollView> */
-      body {
-        overflow: hidden;
-      }
-      /* These styles make the root element full-height */
-      #root {
-        display: flex;
-        height: 100%;
-        flex: 1;
-      }
-    </style>
-  <link rel="preload" href="/_expo/static/css/leaflet-d5d94a32cfd845987a0e487c8f0b884e.css" as="style"><link rel="stylesheet" href="/_expo/static/css/leaflet-d5d94a32cfd845987a0e487c8f0b884e.css"><link rel="icon" href="/favicon.ico" /></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nested Travel — Wellness-Focused Trip Planning</title>
+  <meta name="description" content="Plan mindful trips with AI-powered itineraries, wellness-focused recommendations, and curated travel experiences.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; color: #2D2D2D; background: #fff; }
 
-  <body>
-    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <!-- The root element for your Expo app. -->
-    <div id="root"></div>
-  <script src="/_expo/static/js/web/entry-1029997343269f66b761de8b228361cd.js" defer></script>
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      overflow: hidden;
+    }
+
+    /* Water background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.15) 0%,
+          rgba(245,237,238,0.4) 30%,
+          rgba(203,165,165,0.15) 100%),
+        url('https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=1920&q=80&auto=format&fit=crop')
+        center / cover no-repeat;
+      filter: brightness(1.05) saturate(0.85);
+      z-index: 0;
+    }
+
+    /* Soft overlay for text readability */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.55);
+      z-index: 1;
+    }
+
+    .hero > * { position: relative; z-index: 2; }
+
+    /* ===== BRAND ===== */
+    .brand-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 100;
+      font-size: 52px;
+      letter-spacing: 6px;
+      color: #996B6B;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      font-size: 20px;
+      color: #8B6060;
+      margin-bottom: 48px;
+      max-width: 480px;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== CTA BADGES ===== */
+    .badge-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #996B6B;
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .badge:hover { background: #8B6060; transform: translateY(-1px); }
+
+    /* ===== FEATURES ===== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 720px;
+      width: 100%;
+    }
+    .feature {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(203, 165, 165, 0.2);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .feature-icon {
+      font-family: 'Material Symbols Outlined';
+      font-size: 32px;
+      font-weight: 200;
+      color: #996B6B;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+    .feature h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #996B6B;
+    }
+    .feature p {
+      font-size: 14px;
+      color: #595959;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 13px;
+      color: #8B6060;
+      background: #F5EDEE;
+      letter-spacing: 0.3px;
+    }
+    footer a { color: #996B6B; text-decoration: none; font-weight: 400; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 480px) {
+      .brand-name { font-size: 36px; letter-spacing: 4px; }
+      .tagline { font-size: 17px; }
+      .badge { padding: 12px 24px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1 class="brand-name">Nested Travel</h1>
+    <p class="tagline">Wellness-focused trip planning with AI-powered itineraries and curated experiences.</p>
+    <div class="badge-row">
+      <a class="badge" href="#">Coming Soon on the App Store</a>
+      <a class="badge" href="#">Coming Soon on Google Play</a>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">spa</div>
+        <h3>Wellness First</h3>
+        <p>Travel recommendations tailored to your wellness preferences.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">route</div>
+        <h3>AI Trip Builder</h3>
+        <p>Generate personalized itineraries with one tap.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">apartment</div>
+        <h3>Hotels &amp; Activities</h3>
+        <p>Search and book hotels, restaurants, and experiences.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    &copy; 2026 Nested Travel &middot;
+    <a href="/privacy.html">Privacy Policy</a> &middot;
+    <a href="/terms.html">Terms &amp; Conditions</a> &middot;
+    <a href="mailto:support@nestedtravel.com">Contact</a>
+  </footer>
 </body>
 </html>
