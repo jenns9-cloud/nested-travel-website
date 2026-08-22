@@ -67,7 +67,14 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 32px;
-      background: linear-gradient(180deg, rgba(13,24,38,0.55) 0%, rgba(13,24,38,0.18) 60%, rgba(13,24,38,0) 100%);
+      /* The bar now stays clear for the whole hero, so its own scrim has to carry
+         the white mark over the brightest part of the sky (worst case ~scrollY 190).
+         Measured in scripts/contrast-check.py — do not lighten without re-running. */
+      background: linear-gradient(180deg,
+        rgba(13,24,38,0.68) 0%,
+        rgba(13,24,38,0.58) 60%,
+        rgba(13,24,38,0.28) 85%,
+        rgba(13,24,38,0) 100%);
       transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
     }
     .site-header.scrolled {
@@ -85,6 +92,7 @@
       text-transform: uppercase;
       color: #FFFCFA;
       text-decoration: none;
+      transition: color 0.3s ease;
     }
     .header-cta {
       font-family: 'Montserrat', sans-serif;
@@ -97,9 +105,22 @@
       border: 1px solid rgba(255,252,250,0.7);
       padding: 9px 18px;
       border-radius: 2px;
-      transition: background 0.3s ease, color 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
     .header-cta:hover { background: rgba(255,252,250,0.94); color: var(--ink); }
+
+    /* Once the bar turns to paper the mark and CTA have to turn with it —
+       white on warm off-white is invisible. */
+    .site-header.scrolled .mark { color: var(--ink); }
+    .site-header.scrolled .header-cta {
+      color: var(--ink);
+      border-color: rgba(45, 45, 45, 0.55);   /* 3.29:1 — WCAG 1.4.11 non-text */
+    }
+    .site-header.scrolled .header-cta:hover {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
 
 
     .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 32px; }
@@ -114,32 +135,49 @@
     /* ═══ HERO ═══ */
     .hero {
       position: relative;
-      min-height: 92svh;
+      overflow: hidden;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
       text-align: center;
-      padding: 128px 32px 156px;
+      padding: 120px 32px 68px;
     }
-    /* The photograph runs at full strength. Legibility comes from a contained
-       scrim behind the copy (below), not from bleaching the image — every
-       element is measured against WCAG AA in scripts/contrast-check.py. */
+    /* The photograph sits in a frame TALLER than the hero and pulled upward, so
+       the sun rides in the top third and the copy lands on the water and floor
+       beneath it. `cover` inside that frame keeps it gapless at any aspect. */
     .hero::before {
       content: '';
-      position: absolute; inset: 0;
+      position: absolute;
+      left: 0; right: 0;
+      top: -22%; height: 122%;
       background-image:
-        linear-gradient(180deg, rgba(13,24,38,0.38) 0%, rgba(13,24,38,0.00) 20%, rgba(13,24,38,0.00) 42%, rgba(13,24,38,0.50) 52%, rgba(13,24,38,0.70) 64%, rgba(13,24,38,0.84) 82%, rgba(13,24,38,0.88) 100%),
         image-set(url('assets/hero-2400.jpg') 2x, url('assets/hero-1600.jpg') 1x);
       background-image:
-        linear-gradient(180deg, rgba(13,24,38,0.38) 0%, rgba(13,24,38,0.00) 20%, rgba(13,24,38,0.00) 42%, rgba(13,24,38,0.50) 52%, rgba(13,24,38,0.70) 64%, rgba(13,24,38,0.84) 82%, rgba(13,24,38,0.88) 100%),
         -webkit-image-set(url('assets/hero-2400.jpg') 2x, url('assets/hero-1600.jpg') 1x);
       background-size: cover;
-      background-position: center 52%;
+      background-position: center 55%;
+      pointer-events: none;
+    }
+    /* The scrim: aligned to the hero, clear across the sky, darkening from just
+       above the copy down. Legibility comes from this rather than from bleaching
+       the photograph — every element is measured in scripts/contrast-check.py. */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg,
+        rgba(13,24,38,0.58) 0%,
+        rgba(13,24,38,0.24) 9%,
+        rgba(13,24,38,0.02) 24%,
+        rgba(13,24,38,0.00) 33%,
+        rgba(13,24,38,0.34) 43%,
+        rgba(13,24,38,0.66) 55%,
+        rgba(13,24,38,0.82) 72%,
+        rgba(13,24,38,0.88) 100%);
       pointer-events: none;
     }
 
-    /* The scrim: a soft warm panel behind the words only. */
     .hero-copy { position: relative; z-index: 1; padding: 0; }
     .hero > * { position: relative; z-index: 1; }
 
@@ -153,21 +191,8 @@
       margin-right: -5px;
       text-transform: uppercase;
       color: #FFFFFF;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
-    .eyebrow::before {
-      content: '';
-      position: absolute;
-      inset: -14px -56px;
-      z-index: -1;
-      background: radial-gradient(52% 50% at 50% 50%,
-        rgba(18,13,11,0.72) 0%,
-        rgba(18,13,11,0.52) 42%,
-        rgba(18,13,11,0.20) 68%,
-        rgba(18,13,11,0) 88%);
-      filter: blur(7px);
-    }
-
     .brand {
       font-family: 'Montserrat', sans-serif;
       font-weight: 100;
@@ -177,7 +202,7 @@
       text-transform: uppercase;
       color: #FFFCFA;
       line-height: 1.1;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .slogan {
@@ -188,14 +213,14 @@
       line-height: 1.35;
       color: #FFFCFA;
       max-width: 660px;
-      margin: 22px auto 18px;
+      margin: 18px auto 14px;
     }
 
     .lede {
       font-size: 17px;
       color: #EBE0DC;
       max-width: 500px;
-      margin: 0 auto 32px;
+      margin: 0 auto 28px;
       line-height: 1.75;
     }
 
@@ -351,20 +376,23 @@
          the sunset rather than the floor. Shift the crop down to the darker
          interior and deepen the falloff to match. */
       .hero {
-        min-height: 92svh;
-        padding: 104px 20px 56px;
+        min-height: 100svh;
+        padding: 96px 20px 48px;
       }
       .hero::before {
-        background-position: center 74%;
-        background-image:
-          linear-gradient(180deg,
-            rgba(13,24,38,0.52) 0%,
-            rgba(13,24,38,0.10) 14%,
-            rgba(13,24,38,0.26) 26%,
-            rgba(13,24,38,0.70) 44%,
-            rgba(13,24,38,0.82) 62%,
-            rgba(13,24,38,0.90) 100%),
-          url('assets/hero-960.jpg');
+        top: -30%; height: 130%;
+        background-position: center 55%;
+        background-image: url('assets/hero-960.jpg');
+      }
+      .hero::after {
+        background: linear-gradient(180deg,
+          rgba(13,24,38,0.50) 0%,
+          rgba(13,24,38,0.10) 14%,
+          rgba(13,24,38,0.02) 30%,
+          rgba(13,24,38,0.38) 42%,
+          rgba(13,24,38,0.70) 55%,
+          rgba(13,24,38,0.84) 74%,
+          rgba(13,24,38,0.92) 100%);
       }
       .hero-copy { padding: 0; }
       .brand {
@@ -383,6 +411,24 @@
       .site-header { padding: 16px 22px; }
       .site-header.scrolled { padding: 12px 22px; }
       .site-header .mark { font-size: 11px; letter-spacing: 3.5px; }
+    }
+
+    /* Short phones (iPhone SE class): the copy block is ~60% of the viewport,
+       which pushes it back up onto the sun. Tighten the rhythm until it clears. */
+    @media (max-width: 640px) and (max-height: 800px) {
+      .hero { padding: 76px 20px 36px; }
+      .eyebrow { margin-bottom: 12px; }
+      .brand { margin-bottom: 14px; }
+      .slogan { font-size: clamp(18px, 5.2vw, 21px); margin: 12px auto 10px; }
+      .lede { font-size: 14px; line-height: 1.55; margin: 0 auto 20px; }
+      .cta { min-height: 44px; padding: 11px 24px; }
+      .cta-row { gap: 10px; }
+    }
+
+    /* Very short phones (320x568 class): raise the crop further still. */
+    @media (max-width: 640px) and (max-height: 620px) {
+      .hero { padding: 64px 18px 30px; }
+      .hero::before { top: -42%; height: 142%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -557,11 +603,31 @@
   </footer>
 
   <script>
-    // Header stays invisible over the hero and materialises once you scroll.
+    // The bar stays clear over the photograph and only turns to paper once the
+    // hero image has scrolled up past it. Measured rather than a fixed offset:
+    // the hero is svh-based, so its height moves with the viewport.
     (function () {
       var h = document.getElementById('siteHeader');
-      var onScroll = function () { h.classList.toggle('scrolled', window.scrollY > 60); };
+      var hero = document.querySelector('.hero');
+      var threshold = 0;
+
+      function measure() {
+        // Measure the header at its UNSCROLLED height, so the threshold does not
+        // depend on the class we are about to toggle (that would oscillate).
+        var was = h.classList.contains('scrolled');
+        if (was) h.classList.remove('scrolled');
+        var headerH = h.offsetHeight;
+        if (was) h.classList.add('scrolled');
+        threshold = Math.max(0, hero.offsetHeight - headerH);
+      }
+
+      function onScroll() {
+        h.classList.toggle('scrolled', window.scrollY > threshold);
+      }
+
       addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', function () { measure(); onScroll(); });
+      measure();
       onScroll();
     })();
   </script>
