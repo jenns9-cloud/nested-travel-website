@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nestedtravel.com/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#14100F">
+  <meta name="theme-color" content="#F7F4F1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@100;200;300&family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -19,15 +19,15 @@
        is the same brand rendered for evening rather than morning — the rose
        family, the Montserrat mark, and the spacing all carry over. */
     :root {
-      --ink:        #14100F;   /* warm near-black, never pure #000 */
-      --ink-soft:   #1C1615;
-      --ink-raised: #221B1A;
-      --rose:       #CBA5A5;   /* app primaryLight — luminous on dark */
-      --rose-deep:  #B08A8A;
-      --champagne:  #E4D5CB;
-      --cream:      #F2EBE8;
-      --muted:      #BCB0AC;   /* lifted from #A79B98 — was thin to read */
-      --hairline:   rgba(203, 165, 165, 0.18);
+      --paper:      #F7F4F1;   /* warm off-white, in the Aman/Oura register */
+      --paper-soft: #EFE9E4;   /* banded sections */
+      --paper-deep: #E8E0DA;
+      --ink:        #2D2D2D;   /* the app's own textPrimary */
+      --ink-soft:   #595959;   /* the app's textSecondary */
+      --ink-light:  #6B6B6B;
+      --blush:      #CBA5A5;   /* decorative only — too light for text */
+      --blush-deep: #8F6363;   /* AA on paper at 4.9:1 — all text and CTAs */
+      --hairline:   rgba(143, 99, 99, 0.20);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,8 +38,8 @@
       font-weight: 300;
       font-size: 16px;
       line-height: 1.75;
-      color: var(--muted);
-      background: var(--ink);
+      color: var(--ink-soft);
+      background: var(--paper);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
@@ -53,7 +53,8 @@
       inset: 0;
       pointer-events: none;
       z-index: 9;
-      opacity: 0.05;
+      mix-blend-mode: multiply;
+      opacity: 0.035;   /* lighter touch on paper than it needed on dark */
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
@@ -66,12 +67,12 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 32px;
-      background: rgba(20, 16, 15, 0);
+      background: rgba(247, 244, 241, 0);
       backdrop-filter: blur(0px);
       transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
     }
     .site-header.scrolled {
-      background: rgba(20, 16, 15, 0.82);
+      background: rgba(247, 244, 241, 0.88);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--hairline);
@@ -83,7 +84,7 @@
       font-size: 13px;
       letter-spacing: 5px;
       text-transform: uppercase;
-      color: var(--cream);
+      color: var(--ink);
       text-decoration: none;
     }
     .header-cta {
@@ -92,85 +93,43 @@
       font-size: 10px;
       letter-spacing: 2.4px;
       text-transform: uppercase;
-      color: var(--rose);
+      color: var(--blush-deep);
       text-decoration: none;
-      border: 1px solid var(--rose-deep);
+      border: 1px solid var(--blush-deep);
       padding: 9px 18px;
       border-radius: 2px;
       transition: background 0.3s ease, color 0.3s ease;
     }
-    .header-cta:hover { background: rgba(203,165,165,0.12); color: var(--champagne); }
+    .header-cta:hover { background: var(--blush-deep); color: var(--paper); }
 
-    /* ═══ DEVICE ═══ */
-    .device-wrap {
-      margin-top: 52px;
-      display: flex;
-      justify-content: center;
-      perspective: 1400px;
-      /* The phone rises out of the dark and dissolves back into it, so the
-         section boundary never reads as a crop. */
-      -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent 99%);
-      mask-image: linear-gradient(180deg, #000 80%, transparent 99%);
-    }
-    .device {
-      position: relative;
-      width: 285px;
-      border-radius: 42px;
-      padding: 10px;
-      background: linear-gradient(160deg, #3A2E2C, #191413 55%, #2A211F);
-      box-shadow:
-        0 50px 90px -30px rgba(0,0,0,0.85),
-        0 0 60px -14px rgba(203,165,165,0.22),
-        inset 0 1px 0 rgba(228,213,203,0.16);
-      transform: rotateX(4deg);
-    }
-    .device img { display: block; width: 100%; border-radius: 33px; }
-    /* Warm light catching the top edge of the glass. */
-    .device::after {
-      content: '';
-      position: absolute;
-      inset: 10px;
-      border-radius: 33px;
-      pointer-events: none;
-      background: linear-gradient(168deg, rgba(228,213,203,0.16) 0%, transparent 32%);
-    }
-    .device-glow {
-      position: absolute;
-      left: 50%; top: 42%;
-      width: 620px; height: 420px;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(50% 50%, rgba(203,165,165,0.16), transparent 70%);
-      filter: blur(30px);
-      pointer-events: none;
-      z-index: -1;
-    }
 
     .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 32px; }
 
     /* ── Hairline flourish ── */
     .rule {
       width: 56px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      background: linear-gradient(90deg, transparent, var(--blush-deep), transparent);
       margin: 0 auto;
     }
 
     /* ═══ HERO ═══ */
     .hero {
       position: relative;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 136px 32px 0;
+      padding: 140px 32px 100px;
     }
     /* Warm light pooling from above — the whole background treatment, no photo. */
     .hero::before {
       content: '';
       position: absolute; inset: 0;
       background:
-        radial-gradient(120% 80% at 50% -10%, rgba(203,165,165,0.20) 0%, rgba(203,165,165,0.06) 38%, transparent 68%),
-        radial-gradient(90% 60% at 50% 108%, rgba(176,138,138,0.12) 0%, transparent 62%);
+        radial-gradient(120% 80% at 50% -12%, rgba(203,165,165,0.26) 0%, rgba(203,165,165,0.08) 42%, transparent 72%),
+        radial-gradient(90% 55% at 50% 110%, rgba(232,224,218,0.7) 0%, transparent 64%);
       pointer-events: none;
     }
     .hero > * { position: relative; z-index: 1; }
@@ -181,7 +140,7 @@
       font-size: 11px;
       letter-spacing: 5px;
       text-transform: uppercase;
-      color: var(--rose);
+      color: var(--blush-deep);
       margin-bottom: 28px;
     }
 
@@ -191,7 +150,7 @@
       font-size: clamp(34px, 7vw, 62px);
       letter-spacing: clamp(6px, 1.6vw, 14px);
       text-transform: uppercase;
-      color: var(--cream);
+      color: var(--ink);
       line-height: 1.1;
       margin-bottom: 34px;
     }
@@ -202,14 +161,14 @@
       font-style: italic;
       font-size: clamp(24px, 3.6vw, 38px);
       line-height: 1.35;
-      color: var(--champagne);
+      color: var(--ink);
       max-width: 660px;
       margin: 34px auto 24px;
     }
 
     .lede {
       font-size: 16px;
-      color: var(--muted);
+      color: var(--ink-soft);
       max-width: 500px;
       margin: 0 auto 48px;
       line-height: 1.8;
@@ -234,50 +193,50 @@
       text-decoration: none;
       transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
     }
-    .cta-solid { background: var(--rose); color: var(--ink); }
-    .cta-solid:hover { background: var(--champagne); }
-    .cta-ghost { border: 1px solid var(--rose-deep); color: var(--rose); }
-    .cta-ghost:hover { background: rgba(203,165,165,0.10); border-color: var(--rose); color: var(--champagne); }
-    .cta:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+    .cta-solid { background: var(--blush-deep); color: var(--paper); }
+    .cta-solid:hover { background: var(--ink); color: var(--paper); }
+    .cta-ghost { border: 1px solid var(--blush-deep); color: var(--blush-deep); }
+    .cta-ghost:hover { background: var(--blush-deep); color: var(--paper); }
+    .cta:focus-visible { outline: 1px solid var(--blush-deep); outline-offset: 4px; }
 
     /* ═══ SECTIONS ═══ */
     section { padding: 118px 0; }
-    .band { background: var(--ink-soft); }
+    .band { background: var(--paper-soft); }
 
     .section-head { text-align: center; margin-bottom: 76px; }
     .section-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
       font-size: clamp(28px, 4vw, 42px);
-      color: var(--cream);
+      color: var(--ink);
       letter-spacing: 0.5px;
       margin: 22px 0 16px;
     }
-    .section-sub { font-size: 16px; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .section-sub { font-size: 16px; color: var(--ink-soft); max-width: 520px; margin: 0 auto; }
     .kicker {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       font-size: 10px;
       letter-spacing: 4.5px;
       text-transform: uppercase;
-      color: var(--rose-deep);
+      color: var(--blush-deep);
     }
 
     /* ═══ PILLARS ═══ */
-    .pillars { margin-top: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--hairline); }
-    .pillar { background: var(--ink); padding: 52px 36px; text-align: center; transition: background 0.4s ease; }
-    .pillar:hover { background: var(--ink-raised); }
-    .pillar svg { width: 26px; height: 26px; color: var(--rose); margin-bottom: 22px; }
+    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--hairline); }
+    .pillar { background: var(--paper); padding: 52px 36px; text-align: center; transition: background 0.4s ease; }
+    .pillar:hover { background: var(--paper-soft); }
+    .pillar svg { width: 26px; height: 26px; color: var(--blush-deep); margin-bottom: 22px; }
     .pillar h3 {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       font-size: 13px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--champagne);
+      color: var(--ink);
       margin-bottom: 14px;
     }
-    .pillar p { font-size: 15px; color: var(--muted); }
+    .pillar p { font-size: 15px; color: var(--ink-soft); }
 
     /* ═══ DETAIL ROWS ═══ */
     .rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 52px 64px; }
@@ -286,7 +245,7 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 26px;
       font-weight: 300;
-      color: var(--rose-deep);
+      color: var(--blush-deep);
       line-height: 1;
       padding-top: 4px;
       min-width: 32px;
@@ -297,17 +256,17 @@
       font-size: 13px;
       letter-spacing: 2.4px;
       text-transform: uppercase;
-      color: var(--champagne);
+      color: var(--ink);
       margin-bottom: 10px;
     }
-    .row p { font-size: 15px; color: var(--muted); }
+    .row p { font-size: 15px; color: var(--ink-soft); }
 
     /* ═══ PLANS ═══ */
     .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 760px; margin: 0 auto; }
-    .plan { border: 1px solid var(--hairline); padding: 44px 36px; background: var(--ink); position: relative; }
+    .plan { border: 1px solid var(--hairline); padding: 44px 36px; background: var(--paper); position: relative; }
     .plan.pro {
-      border-color: var(--rose-deep);
-      background: linear-gradient(180deg, rgba(203,165,165,0.07), transparent 60%), var(--ink);
+      border-color: var(--blush-deep);
+      background: linear-gradient(180deg, rgba(203,165,165,0.16), transparent 62%), var(--paper);
     }
     .plan .tier {
       font-family: 'Montserrat', sans-serif;
@@ -315,24 +274,24 @@
       font-size: 11px;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: var(--rose);
+      color: var(--blush-deep);
       margin-bottom: 18px;
     }
     .plan .price {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
       font-size: 46px;
-      color: var(--cream);
+      color: var(--ink);
       line-height: 1;
       margin-bottom: 8px;
     }
-    .plan .period { font-size: 13px; color: var(--muted); margin-bottom: 30px; }
+    .plan .period { font-size: 13px; color: var(--ink-soft); margin-bottom: 30px; }
     .plan ul { list-style: none; }
-    .plan li { font-size: 15px; color: var(--muted); padding-left: 22px; position: relative; margin-bottom: 12px; }
+    .plan li { font-size: 15px; color: var(--ink-soft); padding-left: 22px; position: relative; margin-bottom: 12px; }
     .plan li::before {
       content: '';
       position: absolute; left: 0; top: 11px;
-      width: 9px; height: 1px; background: var(--rose-deep);
+      width: 9px; height: 1px; background: var(--blush-deep);
     }
 
     /* ═══ CLOSING ═══ */
@@ -345,18 +304,18 @@
       text-align: center;
       padding: 44px 32px;
       font-size: 13px;
-      color: #7E7370;
+      color: var(--ink-light);
       letter-spacing: 0.4px;
     }
-    footer a { color: var(--rose-deep); text-decoration: none; transition: color 0.3s ease; }
-    footer a:hover { color: var(--rose); }
+    footer a { color: var(--blush-deep); text-decoration: none; transition: color 0.3s ease; }
+    footer a:hover { color: var(--ink); }
     .footer-mark {
       font-family: 'Montserrat', sans-serif;
       font-weight: 100;
       font-size: 13px;
       letter-spacing: 6px;
       text-transform: uppercase;
-      color: var(--champagne);
+      color: var(--ink);
       margin-bottom: 18px;
     }
 
@@ -369,9 +328,6 @@
       .pillar { padding: 42px 28px; }
       .rows { gap: 40px; }
       .plan { padding: 36px 28px; }
-      .device { width: 235px; border-radius: 36px; }
-      .device img { border-radius: 28px; }
-      .device-wrap { margin-top: 40px; }
       .site-header { padding: 16px 22px; }
       .site-header.scrolled { padding: 12px 22px; }
       .site-header .mark { font-size: 11px; letter-spacing: 3.5px; }
@@ -409,13 +365,6 @@
         <a class="cta cta-ghost" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
       </div>
 
-      <div class="device-wrap">
-        <div class="device">
-          <div class="device-glow" aria-hidden="true"></div>
-          <img src="assets/app-trips.jpg" width="570" height="767"
-               alt="The Nested Travel app showing an upcoming trip to Dubai with its dates and saved places.">
-        </div>
-      </div>
     </header>
 
     <!-- ═══ PILLARS ═══ -->

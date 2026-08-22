@@ -8,21 +8,22 @@
     /* Matches the landing page: same dark palette, same type. Body copy is
        lifted to #E0D7D3 on near-black because legal text is read at length. */
     :root {
-      --ink: #14100F;
-      --rose: #CBA5A5;
-      --rose-deep: #B08A8A;
-      --champagne: #E4D5CB;
-      --cream: #F2EBE8;
-      --body: #C9BEBA;
-      --hairline: rgba(203, 165, 165, 0.18);
+      --paper:      #F7F4F1;
+      --paper-soft: #EFE9E4;
+      --ink:        #2D2D2D;
+      --ink-soft:   #595959;
+      --ink-light:  #6B6B6B;
+      --blush:      #CBA5A5;
+      --blush-deep: #8F6363;
+      --hairline:   rgba(143, 99, 99, 0.20);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body {
       font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
       font-weight: 300;
-      color: var(--body);
-      background: var(--ink);
+      color: var(--ink-soft);
+      background: var(--paper);
       line-height: 1.8;
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
@@ -35,17 +36,17 @@
       font-size: 12px;
       letter-spacing: 6px;
       text-transform: uppercase;
-      color: var(--champagne);
+      color: var(--ink);
       text-decoration: none;
       margin-bottom: 56px;
     }
-    .home:hover { color: var(--rose); }
+    .home:hover { color: var(--blush-deep); }
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
       font-size: 40px;
       line-height: 1.2;
-      color: var(--cream);
+      color: var(--ink);
       text-align: center;
       margin-bottom: 10px;
     }
@@ -55,7 +56,7 @@
       font-size: 10px;
       letter-spacing: 3.5px;
       text-transform: uppercase;
-      color: var(--rose-deep);
+      color: var(--blush-deep);
       text-align: center;
       margin-bottom: 56px;
     }
@@ -65,7 +66,7 @@
       font-size: 12px;
       letter-spacing: 2.6px;
       text-transform: uppercase;
-      color: var(--rose);
+      color: var(--blush-deep);
       margin-top: 48px;
       margin-bottom: 14px;
       padding-top: 22px;
@@ -75,24 +76,24 @@
       font-family: 'Lato', sans-serif;
       font-size: 16px;
       font-weight: 400;
-      color: var(--champagne);
+      color: var(--ink);
       margin-top: 26px;
       margin-bottom: 6px;
     }
     p, ul { font-size: 16px; margin-bottom: 16px; }
     ul { padding-left: 20px; }
     li { margin-bottom: 10px; }
-    li::marker { color: var(--rose-deep); }
-    strong { color: var(--champagne); font-weight: 400; }
-    a { color: var(--rose); text-decoration: none; border-bottom: 1px solid var(--hairline); }
-    a:hover { color: var(--champagne); }
+    li::marker { color: var(--blush-deep); }
+    strong { color: var(--ink); font-weight: 400; }
+    a { color: var(--blush-deep); text-decoration: none; border-bottom: 1px solid var(--hairline); }
+    a:hover { color: var(--ink); }
     footer {
       border-top: 1px solid var(--hairline);
       margin-top: 64px;
       padding-top: 32px;
       text-align: center;
       font-size: 13px;
-      color: #7E7370;
+      color: var(--ink-light);
     }
     @media (max-width: 600px) {
       .page { padding: 48px 22px 72px; }
@@ -103,7 +104,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@100;300&family=Lato:wght@300;400&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#14100F">
+  <meta name="theme-color" content="#F7F4F1">
 </head>
 <body>
   <div class="page">
