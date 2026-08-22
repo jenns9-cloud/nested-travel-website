@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nested Travel — Wellness-Focused Trip Planning</title>
-  <meta name="description" content="Plan mindful trips with AI-powered itineraries, wellness-focused recommendations, and curated travel experiences.">
+  <title>Nested Travel — Wellness Trip &amp; Spa Planner</title>
+  <meta name="description" content="Your wellness trip planner: discover boutique spa retreats, wellness hotels, and standout restaurants — then build calm, personalized itineraries for every escape.">
+  <meta property="og:title" content="Nested Travel — Wellness Trip &amp; Spa Planner">
+  <meta property="og:description" content="Discover spa retreats, wellness hotels, and standout restaurants — then build calm, personalized itineraries for every escape.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nestedtravel.com/">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -139,6 +144,73 @@
       font-weight: 300;
     }
 
+    /* ===== SECOND BAND ===== */
+    .more {
+      background: #FBF7F7;
+      padding: 72px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .more h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: #996B6B;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .more .sub {
+      font-weight: 300;
+      font-size: 16px;
+      color: #7A6A6A;
+      max-width: 520px;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 44px;
+    }
+    .rows {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px 40px;
+      max-width: 860px;
+      width: 100%;
+    }
+    .row-item { display: flex; gap: 14px; align-items: flex-start; }
+    .row-icon {
+      font-family: 'Material Symbols Outlined';
+      font-size: 24px;
+      font-weight: 200;
+      color: #B08A8A;
+      line-height: 1.3;
+      flex-shrink: 0;
+    }
+    .row-item h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #996B6B;
+      margin-bottom: 4px;
+    }
+    .row-item p {
+      font-size: 14px;
+      color: #595959;
+      line-height: 1.55;
+      font-weight: 300;
+    }
+    .closing {
+      margin-top: 56px;
+      text-align: center;
+    }
+    .closing p {
+      font-weight: 300;
+      font-size: 16px;
+      color: #7A6A6A;
+      margin-bottom: 24px;
+    }
+
     /* ===== FOOTER ===== */
     footer {
       text-align: center;
@@ -156,13 +228,16 @@
       .brand-name { font-size: 36px; letter-spacing: 4px; }
       .tagline { font-size: 17px; }
       .badge { padding: 12px 24px; font-size: 14px; }
+      .more { padding: 56px 20px; }
+      .more h2 { font-size: 21px; }
+      .rows { gap: 26px; }
     }
   </style>
 </head>
 <body>
   <div class="hero">
     <h1 class="brand-name">Nested Travel</h1>
-    <p class="tagline">Wellness-focused trip planning with AI-powered itineraries and curated experiences.</p>
+    <p class="tagline">Your wellness trip planner. Discover boutique spa retreats, wellness hotels, and standout restaurants &mdash; then build calm, personalized itineraries for every escape.</p>
     <div class="badge-row">
       <a class="badge" href="https://apps.apple.com/us/app/nested-travel/id6758023174">Download on the App Store</a>
       <a class="badge" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Get it on Google Play</a>
@@ -171,20 +246,79 @@
       <div class="feature">
         <div class="feature-icon">spa</div>
         <h3>Wellness First</h3>
-        <p>Travel recommendations tailored to your wellness preferences.</p>
+        <p>Spas, retreats, wellness hotels, fitness, and restaurants worth planning a day around.</p>
       </div>
       <div class="feature">
         <div class="feature-icon">route</div>
         <h3>AI Trip Builder</h3>
-        <p>Generate personalized itineraries with one tap.</p>
+        <p>A considered day-by-day itinerary, shaped around what you want the trip to do for you.</p>
       </div>
       <div class="feature">
-        <div class="feature-icon">apartment</div>
-        <h3>Hotels &amp; Activities</h3>
-        <p>Search and book hotels, restaurants, and experiences.</p>
+        <div class="feature-icon">favorite</div>
+        <h3>Places You Save</h3>
+        <p>Keep what catches your eye, then drop it straight into the right day of a trip.</p>
       </div>
     </div>
   </div>
+
+  <section class="more">
+    <h2>What's inside</h2>
+    <p class="sub">Everything in one place, from the first idea to the trip you actually took.</p>
+
+    <div class="rows">
+      <div class="row-item">
+        <div class="row-icon">calendar_month</div>
+        <div>
+          <h3>Itineraries that hold together</h3>
+          <p>Plan day by day, keep multi-night stays in one piece, and reorder as plans change. Move the dates and the itinerary moves with them.</p>
+        </div>
+      </div>
+      <div class="row-item">
+        <div class="row-icon">reviews</div>
+        <div>
+          <h3>Reviews from real travelers</h3>
+          <p>Read what people actually thought of a hotel, spa, or restaurant &mdash; on the place itself, before you plan around it.</p>
+        </div>
+      </div>
+      <div class="row-item">
+        <div class="row-icon">hotel</div>
+        <div>
+          <h3>See rates when you're ready</h3>
+          <p>Compare rates for a stay through our booking partner. You book on their site; we may earn a commission, and we tell you where.</p>
+        </div>
+      </div>
+      <div class="row-item">
+        <div class="row-icon">notifications</div>
+        <div>
+          <h3>Quiet reminders</h3>
+          <p>A nudge three days out, another the day before, and a note about an hour ahead of anything you've scheduled.</p>
+        </div>
+      </div>
+      <div class="row-item">
+        <div class="row-icon">self_improvement</div>
+        <div>
+          <h3>Travel that learns what you like</h3>
+          <p>Note how a trip felt when you're home. Save a wellness focus and the next itinerary starts closer to what suits you.</p>
+        </div>
+      </div>
+      <div class="row-item">
+        <div class="row-icon">picture_as_pdf</div>
+        <div>
+          <h3>Yours to take along</h3>
+          <p>Export a trip as a PDF or keep it available offline, so the plan is there whether or not the signal is.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="closing">
+      <p>Free to plan your first trip. Pro when you want more.</p>
+      <div class="badge-row" style="margin-bottom:0;">
+        <a class="badge" href="https://apps.apple.com/us/app/nested-travel/id6758023174">Download on the App Store</a>
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Get it on Google Play</a>
+      </div>
+    </div>
+  </section>
+
   <footer>
     &copy; 2026 Nested Travel &middot;
     <a href="/privacy.html">Privacy Policy</a> &middot;
