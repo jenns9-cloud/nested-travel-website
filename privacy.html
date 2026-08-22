@@ -5,20 +5,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy - Nested Travel</title>
   <style>
+    /* Matches the landing page: same dark palette, same type. Body copy is
+       lifted to #E0D7D3 on near-black because legal text is read at length. */
+    :root {
+      --ink: #14100F;
+      --rose: #CBA5A5;
+      --rose-deep: #B08A8A;
+      --champagne: #E4D5CB;
+      --cream: #F2EBE8;
+      --body: #C9BEBA;
+      --hairline: rgba(203, 165, 165, 0.18);
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; line-height: 1.6; max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; background: #fff; }
-    h1 { font-size: 28px; font-weight: 600; text-align: center; margin-bottom: 8px; }
-    .meta { font-size: 13px; color: #888; text-align: center; margin-bottom: 32px; }
-    h2 { font-size: 18px; font-weight: 600; color: #4A7C59; margin-top: 28px; margin-bottom: 8px; }
-    h3 { font-size: 15px; font-weight: 600; margin-top: 16px; margin-bottom: 4px; }
-    p, ul { font-size: 15px; margin-bottom: 12px; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 300;
+      color: var(--body);
+      background: var(--ink);
+      line-height: 1.8;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 760px; margin: 0 auto; padding: 72px 28px 96px; }
+    .home {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 100;
+      font-size: 12px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--champagne);
+      text-decoration: none;
+      margin-bottom: 56px;
+    }
+    .home:hover { color: var(--rose); }
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 40px;
+      line-height: 1.2;
+      color: var(--cream);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .meta {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-top: 48px;
+      margin-bottom: 14px;
+      padding-top: 22px;
+      border-top: 1px solid var(--hairline);
+    }
+    h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--champagne);
+      margin-top: 26px;
+      margin-bottom: 6px;
+    }
+    p, ul { font-size: 16px; margin-bottom: 16px; }
     ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-    a { color: #4A7C59; }
+    li { margin-bottom: 10px; }
+    li::marker { color: var(--rose-deep); }
+    strong { color: var(--champagne); font-weight: 400; }
+    a { color: var(--rose); text-decoration: none; border-bottom: 1px solid var(--hairline); }
+    a:hover { color: var(--champagne); }
+    footer {
+      border-top: 1px solid var(--hairline);
+      margin-top: 64px;
+      padding-top: 32px;
+      text-align: center;
+      font-size: 13px;
+      color: #7E7370;
+    }
+    @media (max-width: 600px) {
+      .page { padding: 48px 22px 72px; }
+      h1 { font-size: 30px; }
+      .home { margin-bottom: 40px; }
+    }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@100;300&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#14100F">
 </head>
 <body>
-  <h1>Nested Travel<br>Privacy Policy</h1>
+  <div class="page">
+    <a class="home" href="/">&larr;&nbsp; Nested Travel</a>
+<h1>Nested Travel<br>Privacy Policy</h1>
   <p class="meta">Last Updated: August 21, 2026</p>
 
   <h2>1. Introduction</h2>
@@ -92,5 +182,7 @@
 
   <h2>11. Contact Us</h2>
   <p>If you have questions or concerns about this Privacy Policy or your personal data, contact us at: <a href="mailto:privacy@nestedtravel.com">privacy@nestedtravel.com</a></p>
+    <footer>&copy; 2026 Nested Travel &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a> &middot; <a href="mailto:support@nestedtravel.com">Contact</a></footer>
+  </div>
 </body>
 </html>

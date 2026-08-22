@@ -10,320 +10,429 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nestedtravel.com/">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#14100F">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@100;200;300&family=Lato:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; color: #2D2D2D; background: #fff; }
+    /* Dark expression of the app's rose palette. The product UI is light; this
+       is the same brand rendered for evening rather than morning — the rose
+       family, the Montserrat mark, and the spacing all carry over. */
+    :root {
+      --ink:        #14100F;   /* warm near-black, never pure #000 */
+      --ink-soft:   #1C1615;
+      --ink-raised: #221B1A;
+      --rose:       #CBA5A5;   /* app primaryLight — luminous on dark */
+      --rose-deep:  #B08A8A;
+      --champagne:  #E4D5CB;
+      --cream:      #F2EBE8;
+      --muted:      #A79B98;
+      --hairline:   rgba(203, 165, 165, 0.18);
+    }
 
-    /* ===== HERO ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--muted);
+      background: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hairline flourish ── */
+    .rule {
+      width: 56px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      margin: 0 auto;
+    }
+
+    /* ═══ HERO ═══ */
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 60px 24px;
-      overflow: hidden;
+      padding: 120px 32px 100px;
     }
-
-    /* Water background */
+    /* Warm light pooling from above — the whole background treatment, no photo. */
     .hero::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background:
-        linear-gradient(180deg,
-          rgba(255,255,255,0.15) 0%,
-          rgba(245,237,238,0.4) 30%,
-          rgba(203,165,165,0.15) 100%),
-        url('https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=1920&q=80&auto=format&fit=crop')
-        center / cover no-repeat;
-      filter: brightness(1.05) saturate(0.85);
-      z-index: 0;
+        radial-gradient(120% 80% at 50% -10%, rgba(203,165,165,0.20) 0%, rgba(203,165,165,0.06) 38%, transparent 68%),
+        radial-gradient(90% 60% at 50% 108%, rgba(176,138,138,0.12) 0%, transparent 62%);
+      pointer-events: none;
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 28px;
     }
 
-    /* Soft overlay for text readability */
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.55);
-      z-index: 1;
-    }
-
-    .hero > * { position: relative; z-index: 2; }
-
-    /* ===== BRAND ===== */
-    .brand-name {
+    .brand {
       font-family: 'Montserrat', sans-serif;
       font-weight: 100;
-      font-size: 52px;
-      letter-spacing: 6px;
-      color: #996B6B;
+      font-size: clamp(34px, 7vw, 62px);
+      letter-spacing: clamp(6px, 1.6vw, 14px);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 34px;
     }
 
-    .tagline {
-      font-family: 'Lato', sans-serif;
+    .slogan {
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
-      font-size: 20px;
-      color: #8B6060;
-      margin-bottom: 48px;
-      max-width: 480px;
-      line-height: 1.6;
-      letter-spacing: 0.5px;
+      font-style: italic;
+      font-size: clamp(24px, 3.6vw, 38px);
+      line-height: 1.35;
+      color: var(--champagne);
+      max-width: 660px;
+      margin: 34px auto 24px;
     }
 
-    /* ===== CTA BADGES ===== */
-    .badge-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 56px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .lede {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 48px;
+      line-height: 1.8;
     }
-    .badge {
+
+    /* ═══ BUTTONS ═══ */
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+    .cta {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: #996B6B;
-      color: #fff;
-      padding: 14px 32px;
-      border-radius: 12px;
-      font-family: 'Lato', sans-serif;
-      font-size: 15px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .badge:hover { background: #8B6060; transform: translateY(-1px); }
-
-    /* ===== FEATURES ===== */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      max-width: 720px;
-      width: 100%;
-    }
-    .feature {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(203, 165, 165, 0.2);
-      border-radius: 16px;
-      padding: 28px 20px;
-      text-align: center;
-    }
-    .feature-icon {
-      font-family: 'Material Symbols Outlined';
-      font-size: 32px;
-      font-weight: 200;
-      color: #996B6B;
-      margin-bottom: 14px;
-      line-height: 1;
-    }
-    .feature h3 {
-      font-family: 'Lato', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #996B6B;
-    }
-    .feature p {
-      font-size: 14px;
-      color: #595959;
-      line-height: 1.5;
-      font-weight: 300;
-    }
-
-    /* ===== SECOND BAND ===== */
-    .more {
-      background: #FBF7F7;
-      padding: 72px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .more h2 {
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 14px 30px;
+      border-radius: 2px;                    /* sharp edges read more couture */
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      font-size: 26px;
-      letter-spacing: 2px;
-      color: #996B6B;
+      font-size: 12px;
+      letter-spacing: 2.4px;
       text-transform: uppercase;
-      margin-bottom: 10px;
-      text-align: center;
+      text-decoration: none;
+      transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
     }
-    .more .sub {
+    .cta-solid { background: var(--rose); color: var(--ink); }
+    .cta-solid:hover { background: var(--champagne); }
+    .cta-ghost { border: 1px solid var(--rose-deep); color: var(--rose); }
+    .cta-ghost:hover { background: rgba(203,165,165,0.10); border-color: var(--rose); color: var(--champagne); }
+    .cta:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+
+    /* ═══ SECTIONS ═══ */
+    section { padding: 118px 0; }
+    .band { background: var(--ink-soft); }
+
+    .section-head { text-align: center; margin-bottom: 76px; }
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
-      font-size: 16px;
-      color: #7A6A6A;
-      max-width: 520px;
-      text-align: center;
-      line-height: 1.6;
-      margin-bottom: 44px;
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--cream);
+      letter-spacing: 0.5px;
+      margin: 22px 0 16px;
     }
-    .rows {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 32px 40px;
-      max-width: 860px;
-      width: 100%;
-    }
-    .row-item { display: flex; gap: 14px; align-items: flex-start; }
-    .row-icon {
-      font-family: 'Material Symbols Outlined';
-      font-size: 24px;
-      font-weight: 200;
-      color: #B08A8A;
-      line-height: 1.3;
-      flex-shrink: 0;
-    }
-    .row-item h3 {
-      font-family: 'Lato', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: #996B6B;
-      margin-bottom: 4px;
-    }
-    .row-item p {
-      font-size: 14px;
-      color: #595959;
-      line-height: 1.55;
+    .section-sub { font-size: 16px; color: var(--muted); max-width: 520px; margin: 0 auto; }
+    .kicker {
+      font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-    }
-    .closing {
-      margin-top: 56px;
-      text-align: center;
-    }
-    .closing p {
-      font-weight: 300;
-      font-size: 16px;
-      color: #7A6A6A;
-      margin-bottom: 24px;
+      font-size: 10px;
+      letter-spacing: 4.5px;
+      text-transform: uppercase;
+      color: var(--rose-deep);
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      text-align: center;
-      padding: 28px 24px;
+    /* ═══ PILLARS ═══ */
+    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--hairline); }
+    .pillar { background: var(--ink); padding: 52px 36px; text-align: center; transition: background 0.4s ease; }
+    .pillar:hover { background: var(--ink-raised); }
+    .pillar svg { width: 26px; height: 26px; color: var(--rose); margin-bottom: 22px; }
+    .pillar h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
       font-size: 13px;
-      color: #8B6060;
-      background: #F5EDEE;
-      letter-spacing: 0.3px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 14px;
     }
-    footer a { color: #996B6B; text-decoration: none; font-weight: 400; }
-    footer a:hover { text-decoration: underline; }
+    .pillar p { font-size: 15px; color: var(--muted); }
 
-    /* ===== MOBILE ===== */
-    @media (max-width: 480px) {
-      .brand-name { font-size: 36px; letter-spacing: 4px; }
-      .tagline { font-size: 17px; }
-      .badge { padding: 12px 24px; font-size: 14px; }
-      .more { padding: 56px 20px; }
-      .more h2 { font-size: 21px; }
-      .rows { gap: 26px; }
+    /* ═══ DETAIL ROWS ═══ */
+    .rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 52px 64px; }
+    .row { display: flex; gap: 20px; align-items: flex-start; }
+    .row-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--rose-deep);
+      line-height: 1;
+      padding-top: 4px;
+      min-width: 32px;
+    }
+    .row h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 10px;
+    }
+    .row p { font-size: 15px; color: var(--muted); }
+
+    /* ═══ PLANS ═══ */
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 760px; margin: 0 auto; }
+    .plan { border: 1px solid var(--hairline); padding: 44px 36px; background: var(--ink); position: relative; }
+    .plan.pro {
+      border-color: var(--rose-deep);
+      background: linear-gradient(180deg, rgba(203,165,165,0.07), transparent 60%), var(--ink);
+    }
+    .plan .tier {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 18px;
+    }
+    .plan .price {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 46px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .plan .period { font-size: 13px; color: var(--muted); margin-bottom: 30px; }
+    .plan ul { list-style: none; }
+    .plan li { font-size: 15px; color: var(--muted); padding-left: 22px; position: relative; margin-bottom: 12px; }
+    .plan li::before {
+      content: '';
+      position: absolute; left: 0; top: 11px;
+      width: 9px; height: 1px; background: var(--rose-deep);
+    }
+
+    /* ═══ CLOSING ═══ */
+    .closing { text-align: center; }
+    .closing .slogan { margin-bottom: 40px; }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      border-top: 1px solid var(--hairline);
+      text-align: center;
+      padding: 44px 32px;
+      font-size: 13px;
+      color: #7E7370;
+      letter-spacing: 0.4px;
+    }
+    footer a { color: var(--rose-deep); text-decoration: none; transition: color 0.3s ease; }
+    footer a:hover { color: var(--rose); }
+    .footer-mark {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 100;
+      font-size: 13px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--champagne);
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 0 24px; }
+      section { padding: 76px 0; }
+      .hero { padding: 96px 24px 76px; }
+      .section-head { margin-bottom: 52px; }
+      .cta-row { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin: 0 auto; }
+      .pillar { padding: 42px 28px; }
+      .rows { gap: 40px; }
+      .plan { padding: 36px 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
     }
   </style>
 </head>
 <body>
-  <div class="hero">
-    <h1 class="brand-name">Nested Travel</h1>
-    <p class="tagline">Your wellness trip planner. Discover boutique spa retreats, wellness hotels, and standout restaurants &mdash; then build calm, personalized itineraries for every escape.</p>
-    <div class="badge-row">
-      <a class="badge" href="https://apps.apple.com/us/app/nested-travel/id6758023174">Download on the App Store</a>
-      <a class="badge" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Get it on Google Play</a>
-    </div>
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">spa</div>
-        <h3>Wellness First</h3>
-        <p>Spas, retreats, wellness hotels, fitness, and restaurants worth planning a day around.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">route</div>
-        <h3>AI Trip Builder</h3>
-        <p>A considered day-by-day itinerary, shaped around what you want the trip to do for you.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">favorite</div>
-        <h3>Places You Save</h3>
-        <p>Keep what catches your eye, then drop it straight into the right day of a trip.</p>
-      </div>
-    </div>
-  </div>
 
-  <section class="more">
-    <h2>What's inside</h2>
-    <p class="sub">Everything in one place, from the first idea to the trip you actually took.</p>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2.1 6.3-6.3 2.1 2.1-6.3z"/></g>
+    <g id="i-heart"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></g>
+  </defs></svg>
 
-    <div class="rows">
-      <div class="row-item">
-        <div class="row-icon">calendar_month</div>
-        <div>
-          <h3>Itineraries that hold together</h3>
-          <p>Plan day by day, keep multi-night stays in one piece, and reorder as plans change. Move the dates and the itinerary moves with them.</p>
-        </div>
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <header class="hero">
+      <p class="eyebrow">Wellness Travel</p>
+      <h1 class="brand">Nested Travel</h1>
+      <div class="rule"></div>
+      <p class="slogan">Travel that leaves you better than it found you.</p>
+      <p class="lede">Boutique spa retreats, wellness hotels, and restaurants worth planning a day around &mdash; gathered into itineraries that feel like yours.</p>
+      <div class="cta-row">
+        <a class="cta cta-solid" href="https://apps.apple.com/us/app/nested-travel/id6758023174">App Store</a>
+        <a class="cta cta-ghost" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
       </div>
-      <div class="row-item">
-        <div class="row-icon">reviews</div>
-        <div>
-          <h3>Reviews from real travelers</h3>
-          <p>Read what people actually thought of a hotel, spa, or restaurant &mdash; on the place itself, before you plan around it.</p>
-        </div>
-      </div>
-      <div class="row-item">
-        <div class="row-icon">hotel</div>
-        <div>
-          <h3>See rates when you're ready</h3>
-          <p>Compare rates for a stay through our booking partner. You book on their site; we may earn a commission, and we tell you where.</p>
-        </div>
-      </div>
-      <div class="row-item">
-        <div class="row-icon">notifications</div>
-        <div>
-          <h3>Quiet reminders</h3>
-          <p>A nudge three days out, another the day before, and a note about an hour ahead of anything you've scheduled.</p>
-        </div>
-      </div>
-      <div class="row-item">
-        <div class="row-icon">self_improvement</div>
-        <div>
-          <h3>Travel that learns what you like</h3>
-          <p>Note how a trip felt when you're home. Save a wellness focus and the next itinerary starts closer to what suits you.</p>
-        </div>
-      </div>
-      <div class="row-item">
-        <div class="row-icon">picture_as_pdf</div>
-        <div>
-          <h3>Yours to take along</h3>
-          <p>Export a trip as a PDF or keep it available offline, so the plan is there whether or not the signal is.</p>
-        </div>
-      </div>
-    </div>
+    </header>
 
-    <div class="closing">
-      <p>Free to plan your first trip. Pro when you want more.</p>
-      <div class="badge-row" style="margin-bottom:0;">
-        <a class="badge" href="https://apps.apple.com/us/app/nested-travel/id6758023174">Download on the App Store</a>
-        <a class="badge" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Get it on Google Play</a>
+    <!-- ═══ PILLARS ═══ -->
+    <section style="padding:0;">
+      <div class="pillars">
+        <div class="pillar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-sun"/></svg>
+          <h3>Wellness First</h3>
+          <p>Spas, retreats, wellness hotels, fitness, and restaurants chosen for taste rather than tourism.</p>
+        </div>
+        <div class="pillar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-compass"/></svg>
+          <h3>Considered Itineraries</h3>
+          <p>A day-by-day plan shaped around what you want the trip to do for you, not a list of attractions.</p>
+        </div>
+        <div class="pillar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-heart"/></svg>
+          <h3>Kept For Later</h3>
+          <p>Save what catches your eye and drop it straight into the right day, whenever the trip takes shape.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ═══ INSIDE ═══ -->
+    <section class="band">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">The App</p>
+          <h2 class="section-title">Everything in one place</h2>
+          <p class="section-sub">From the first idea to the trip you actually took.</p>
+        </div>
+
+        <div class="rows">
+          <div class="row">
+            <div class="row-num">01</div>
+            <div>
+              <h3>Itineraries That Hold Together</h3>
+              <p>Plan day by day, keep multi-night stays in one piece, reorder as plans change. Move the dates and the itinerary moves with them.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-num">02</div>
+            <div>
+              <h3>Reviews From Real Travelers</h3>
+              <p>Read what people actually thought of a hotel, spa, or restaurant &mdash; on the place itself, before you plan around it.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-num">03</div>
+            <div>
+              <h3>Rates When You're Ready</h3>
+              <p>Compare rates for a stay through our booking partner. You book on their site; we may earn a commission, and we tell you where.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-num">04</div>
+            <div>
+              <h3>Quiet Reminders</h3>
+              <p>A nudge three days out, another the day before, and a note about an hour ahead of anything you've scheduled.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-num">05</div>
+            <div>
+              <h3>It Learns What You Like</h3>
+              <p>Note how a trip felt once you're home. Save a wellness focus and the next itinerary starts closer to what suits you.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-num">06</div>
+            <div>
+              <h3>Yours To Take Along</h3>
+              <p>Export a trip as a PDF or keep it offline, so the plan is there whether or not the signal is.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PLANS ═══ -->
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Membership</p>
+          <h2 class="section-title">Simple plans</h2>
+          <p class="section-sub">Start free. Upgrade when you're planning more than one trip at a time.</p>
+        </div>
+
+        <div class="plan-grid">
+          <div class="plan">
+            <p class="tier">Free</p>
+            <p class="price">$0</p>
+            <p class="period">Forever</p>
+            <ul>
+              <li>One active trip</li>
+              <li>Up to fifteen saved places</li>
+              <li>One AI itinerary each month</li>
+              <li>PDF export</li>
+            </ul>
+          </div>
+          <div class="plan pro">
+            <p class="tier">Pro</p>
+            <p class="price">$6.99</p>
+            <p class="period">Per month</p>
+            <ul>
+              <li>Unlimited trips and saved places</li>
+              <li>Full AI trip builder</li>
+              <li>Regenerate and refine itineraries</li>
+              <li>Personalized wellness recommendations</li>
+              <li>Offline trip access</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CLOSING ═══ -->
+    <section class="band closing">
+      <div class="wrap">
+        <div class="rule"></div>
+        <p class="slogan">Your next trip is already taking shape.</p>
+        <div class="cta-row">
+          <a class="cta cta-solid" href="https://apps.apple.com/us/app/nested-travel/id6758023174">App Store</a>
+          <a class="cta cta-ghost" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
+    <p class="footer-mark">Nested Travel</p>
     &copy; 2026 Nested Travel &middot;
     <a href="/privacy.html">Privacy Policy</a> &middot;
     <a href="/terms.html">Terms &amp; Conditions</a> &middot;
     <a href="mailto:support@nestedtravel.com">Contact</a>
   </footer>
+
 </body>
 </html>
