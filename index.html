@@ -67,8 +67,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 20px 32px;
-      background: rgba(247, 244, 241, 0);
-      backdrop-filter: blur(0px);
+      background: linear-gradient(180deg, rgba(13,24,38,0.55) 0%, rgba(13,24,38,0.18) 60%, rgba(13,24,38,0) 100%);
       transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
     }
     .site-header.scrolled {
@@ -84,7 +83,7 @@
       font-size: 13px;
       letter-spacing: 5px;
       text-transform: uppercase;
-      color: var(--ink);
+      color: #FFFCFA;
       text-decoration: none;
     }
     .header-cta {
@@ -93,14 +92,14 @@
       font-size: 10px;
       letter-spacing: 2.4px;
       text-transform: uppercase;
-      color: var(--blush-deep);
+      color: #FFFCFA;
       text-decoration: none;
-      border: 1px solid var(--blush-deep);
+      border: 1px solid rgba(255,252,250,0.7);
       padding: 9px 18px;
       border-radius: 2px;
       transition: background 0.3s ease, color 0.3s ease;
     }
-    .header-cta:hover { background: var(--blush-deep); color: var(--paper); }
+    .header-cta:hover { background: rgba(255,252,250,0.94); color: var(--ink); }
 
 
     .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 32px; }
@@ -115,33 +114,58 @@
     /* ═══ HERO ═══ */
     .hero {
       position: relative;
-      min-height: 60svh;
+      min-height: 92svh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       text-align: center;
-      padding: 118px 32px 26px;
+      padding: 128px 32px 156px;
     }
-    /* Warm light pooling from above — the whole background treatment, no photo. */
+    /* The photograph runs at full strength. Legibility comes from a contained
+       scrim behind the copy (below), not from bleaching the image — every
+       element is measured against WCAG AA in scripts/contrast-check.py. */
     .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background:
-        radial-gradient(120% 80% at 50% -12%, rgba(203,165,165,0.26) 0%, rgba(203,165,165,0.08) 42%, transparent 72%),
-        radial-gradient(90% 55% at 50% 110%, rgba(232,224,218,0.7) 0%, transparent 64%);
+      background-image:
+        linear-gradient(180deg, rgba(13,24,38,0.38) 0%, rgba(13,24,38,0.00) 20%, rgba(13,24,38,0.00) 42%, rgba(13,24,38,0.50) 52%, rgba(13,24,38,0.70) 64%, rgba(13,24,38,0.84) 82%, rgba(13,24,38,0.88) 100%),
+        image-set(url('assets/hero-2400.jpg') 2x, url('assets/hero-1600.jpg') 1x);
+      background-image:
+        linear-gradient(180deg, rgba(13,24,38,0.38) 0%, rgba(13,24,38,0.00) 20%, rgba(13,24,38,0.00) 42%, rgba(13,24,38,0.50) 52%, rgba(13,24,38,0.70) 64%, rgba(13,24,38,0.84) 82%, rgba(13,24,38,0.88) 100%),
+        -webkit-image-set(url('assets/hero-2400.jpg') 2x, url('assets/hero-1600.jpg') 1x);
+      background-size: cover;
+      background-position: center 52%;
       pointer-events: none;
     }
+
+    /* The scrim: a soft warm panel behind the words only. */
+    .hero-copy { position: relative; z-index: 1; padding: 0; }
     .hero > * { position: relative; z-index: 1; }
 
     .eyebrow {
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       font-size: 11px;
+      position: relative;
+      display: inline-block;
       letter-spacing: 5px;
+      margin-right: -5px;
       text-transform: uppercase;
-      color: var(--blush-deep);
-      margin-bottom: 28px;
+      color: #FFFFFF;
+      margin-bottom: 22px;
+    }
+    .eyebrow::before {
+      content: '';
+      position: absolute;
+      inset: -14px -56px;
+      z-index: -1;
+      background: radial-gradient(52% 50% at 50% 50%,
+        rgba(18,13,11,0.72) 0%,
+        rgba(18,13,11,0.52) 42%,
+        rgba(18,13,11,0.20) 68%,
+        rgba(18,13,11,0) 88%);
+      filter: blur(7px);
     }
 
     .brand {
@@ -149,10 +173,11 @@
       font-weight: 100;
       font-size: clamp(34px, 7vw, 62px);
       letter-spacing: clamp(6px, 1.6vw, 14px);
+      margin-right: calc(-1 * clamp(6px, 1.6vw, 14px));
       text-transform: uppercase;
-      color: var(--ink);
+      color: #FFFCFA;
       line-height: 1.1;
-      margin-bottom: 34px;
+      margin-bottom: 24px;
     }
 
     .slogan {
@@ -161,17 +186,17 @@
       font-style: italic;
       font-size: clamp(24px, 3.6vw, 38px);
       line-height: 1.35;
-      color: var(--ink);
+      color: #FFFCFA;
       max-width: 660px;
-      margin: 34px auto 24px;
+      margin: 22px auto 18px;
     }
 
     .lede {
-      font-size: 16px;
-      color: var(--ink-soft);
+      font-size: 17px;
+      color: #EBE0DC;
       max-width: 500px;
-      margin: 0 auto 40px;
-      line-height: 1.8;
+      margin: 0 auto 32px;
+      line-height: 1.75;
     }
 
     /* ═══ BUTTONS ═══ */
@@ -195,8 +220,8 @@
     }
     .cta-solid { background: var(--blush-deep); color: var(--paper); }
     .cta-solid:hover { background: var(--ink); color: var(--paper); }
-    .cta-ghost { border: 1px solid var(--blush-deep); color: var(--blush-deep); }
-    .cta-ghost:hover { background: var(--blush-deep); color: var(--paper); }
+    .cta-fill { background: var(--paper); color: var(--ink); border: 1px solid rgba(45,45,45,0.22); }
+    .cta-fill:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
     .cta:focus-visible { outline: 1px solid var(--blush-deep); outline-offset: 4px; }
 
     /* ═══ SECTIONS ═══ */
@@ -219,7 +244,7 @@
       font-size: 10px;
       letter-spacing: 4.5px;
       text-transform: uppercase;
-      color: var(--blush-deep);
+      color: #7E5555;   /* 4.22:1 on the banded surface was a fail; this clears AA */
     }
 
     /* ═══ PILLARS ═══ */
@@ -322,7 +347,34 @@
     @media (max-width: 640px) {
       .wrap { padding: 0 24px; }
       section { padding: 76px 0; }
-      .hero { min-height: auto; padding: 84px 24px 28px; }
+      /* A phone crops this wide image to a narrow slice, so the copy lands on
+         the sunset rather than the floor. Shift the crop down to the darker
+         interior and deepen the falloff to match. */
+      .hero {
+        min-height: 92svh;
+        padding: 104px 20px 56px;
+      }
+      .hero::before {
+        background-position: center 74%;
+        background-image:
+          linear-gradient(180deg,
+            rgba(13,24,38,0.52) 0%,
+            rgba(13,24,38,0.10) 14%,
+            rgba(13,24,38,0.26) 26%,
+            rgba(13,24,38,0.70) 44%,
+            rgba(13,24,38,0.82) 62%,
+            rgba(13,24,38,0.90) 100%),
+          url('assets/hero-960.jpg');
+      }
+      .hero-copy { padding: 0; }
+      .brand {
+        font-size: clamp(23px, 7.4vw, 34px);
+        letter-spacing: clamp(3px, 1.1vw, 6px);
+        margin-right: calc(-1 * clamp(3px, 1.1vw, 6px));
+      }
+      .eyebrow { font-size: 10px; letter-spacing: 3.4px; margin-right: -3.4px; }
+      .slogan { font-size: clamp(20px, 5.6vw, 26px); }
+      .lede { font-size: 15px; }
       .section-head { margin-bottom: 52px; }
       .cta-row { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin: 0 auto; }
       .pillar { padding: 42px 28px; }
@@ -355,14 +407,16 @@
   <main id="top">
     <!-- ═══ HERO ═══ -->
     <header class="hero">
-      <p class="eyebrow">Wellness Travel</p>
-      <h1 class="brand">Nested Travel</h1>
-      <div class="rule"></div>
-      <p class="slogan">Travel that leaves you better than it found you.</p>
-      <p class="lede">Boutique spa retreats, wellness hotels, and restaurants worth planning a day around &mdash; gathered into itineraries that feel like yours.</p>
-      <div class="cta-row">
-        <a class="cta cta-solid" href="https://apps.apple.com/us/app/nested-travel/id6758023174">App Store</a>
-        <a class="cta cta-ghost" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
+      <div class="hero-copy">
+        <p class="eyebrow">Wellness Travel</p>
+        <h1 class="brand">Nested Travel</h1>
+        <div class="rule"></div>
+        <p class="slogan">Travel that leaves you better than it found you.</p>
+        <p class="lede">Boutique spa retreats, wellness hotels, and restaurants worth planning a day around &mdash; gathered into itineraries that feel like yours.</p>
+        <div class="cta-row">
+          <a class="cta cta-solid" href="https://apps.apple.com/us/app/nested-travel/id6758023174">App Store</a>
+          <a class="cta cta-fill" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
+        </div>
       </div>
 
     </header>
@@ -488,7 +542,7 @@
         <p class="slogan">Your next trip is already taking shape.</p>
         <div class="cta-row">
           <a class="cta cta-solid" href="https://apps.apple.com/us/app/nested-travel/id6758023174">App Store</a>
-          <a class="cta cta-ghost" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
+          <a class="cta cta-fill" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app">Google Play</a>
         </div>
       </div>
     </section>
