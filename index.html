@@ -193,16 +193,40 @@
       color: #FFFFFF;
       margin-bottom: 18px;
     }
-    .brand {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 100;
-      font-size: clamp(34px, 7vw, 62px);
-      letter-spacing: clamp(6px, 1.6vw, 14px);
-      margin-right: calc(-1 * clamp(6px, 1.6vw, 14px));
-      text-transform: uppercase;
+    /* The hero headline is a SENTENCE, not the wordmark — the nav bar already
+       carries the wordmark, so spending the largest type on the brand name told
+       a cold visitor nothing. Montserrat 100 at 14px tracking is a wordmark
+       treatment: give it a sentence and it runs to three lines, lands on the
+       sun, and pushes the second CTA below the fold. Cormorant sentence case
+       holds two lines and keeps the sun clear. */
+    .headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(30px, 7.4vw, 52px);
+      letter-spacing: 0;
       color: #FFFCFA;
-      line-height: 1.1;
+      line-height: 1.14;
+      margin-bottom: 16px;
+    }
+    /* The brand slogan, set in the same treatment as the wordmark and sitting
+       directly above the buttons. It reuses .eyebrow rather than restating the
+       type spec, so the two can never drift apart. */
+    .hero .tagline {
+      margin-top: 6px;
       margin-bottom: 20px;
+      color: #FFFCFA;
+    }
+
+    /* The hero slogan steps back to support the headline rather than compete
+       with it. The closing section keeps the original italic display slogan. */
+    .hero .slogan {
+      font-family: 'Lato', system-ui, sans-serif;
+      font-style: normal;
+      font-size: clamp(15px, 2.2vw, 19px);
+      line-height: 1.5;
+      letter-spacing: 0.2px;
+      max-width: 34em;
+      margin: 10px auto 8px;
     }
 
     .slogan {
@@ -395,11 +419,7 @@
           rgba(13,24,38,0.92) 100%);
       }
       .hero-copy { padding: 0; }
-      .brand {
-        font-size: clamp(23px, 7.4vw, 34px);
-        letter-spacing: clamp(3px, 1.1vw, 6px);
-        margin-right: calc(-1 * clamp(3px, 1.1vw, 6px));
-      }
+      .headline { font-size: clamp(26px, 7.2vw, 36px); }
       .eyebrow { font-size: 10px; letter-spacing: 3.4px; margin-right: -3.4px; }
       .slogan { font-size: clamp(20px, 5.6vw, 26px); }
       .lede { font-size: 15px; }
@@ -418,9 +438,13 @@
     @media (max-width: 640px) and (max-height: 800px) {
       .hero { padding: 76px 20px 36px; }
       .eyebrow { margin-bottom: 12px; }
-      .brand { margin-bottom: 14px; }
+      .headline { margin-bottom: 12px; }
       .slogan { font-size: clamp(18px, 5.2vw, 21px); margin: 12px auto 10px; }
       .lede { font-size: 14px; line-height: 1.55; margin: 0 auto 20px; }
+      /* The copy block is bottom-anchored, so every line added to the hero
+         grows it UPWARD toward the sun. Tighten the slogan here or the block
+         rides back onto the sun on short phones. */
+      .hero .tagline { margin-top: 2px; margin-bottom: 12px; }
       .cta { min-height: 44px; padding: 11px 24px; }
       .cta-row { gap: 10px; }
     }
@@ -429,6 +453,12 @@
     @media (max-width: 640px) and (max-height: 620px) {
       .hero { padding: 64px 18px 30px; }
       .hero::before { top: -42%; height: 142%; }
+      /* Bottom-anchored copy: on a 360x600 the block was clearing the sun by a
+         single pixel once 'Escape Better' was added. Tighten the whole stack,
+         not just the new line, so there is a real margin here. */
+      .hero .tagline { margin-top: 0; margin-bottom: 8px; }
+      .hero .slogan  { margin: 8px auto 6px; }
+      .hero .lede    { margin: 0 auto 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -454,14 +484,15 @@
     <!-- ═══ HERO ═══ -->
     <header class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Wellness Travel</p>
-        <h1 class="brand">Nested Travel</h1>
+        <p class="eyebrow">Nested Travel</p>
+        <h1 class="headline">Plan a trip that&rsquo;s actually restful.</h1>
         <div class="rule"></div>
-        <p class="slogan">Travel that leaves you better than it found you.</p>
-        <p class="lede">Boutique spa retreats, wellness hotels, and restaurants worth planning a day around &mdash; gathered into itineraries that feel like yours.</p>
+        <p class="slogan">Spa retreats, wellness hotels, and the restaurants worth a detour.</p>
+        <p class="lede">Everything you save becomes a day-by-day itinerary.</p>
+        <p class="eyebrow tagline">Escape Better</p>
         <div class="cta-row">
-          <a class="cta cta-solid" href="https://apps.apple.com/app/apple-store/id6758023174?pt=128414920&amp;ct=site_hero&amp;mt=8">App Store</a>
-          <a class="cta cta-fill" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app&amp;referrer=utm_source%3Dnestedtravel.com%26utm_medium%3Dwebsite%26utm_campaign%3Dsite_hero">Google Play</a>
+          <a class="cta cta-solid" href="https://apps.apple.com/app/apple-store/id6758023174?pt=128414920&amp;ct=site_hero&amp;mt=8">Get it free &mdash; App Store</a>
+          <a class="cta cta-fill" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app&amp;referrer=utm_source%3Dnestedtravel.com%26utm_medium%3Dwebsite%26utm_campaign%3Dsite_hero">Get it free &mdash; Google Play</a>
         </div>
       </div>
 

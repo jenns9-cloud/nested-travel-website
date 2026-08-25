@@ -64,12 +64,21 @@ def sample(x, y):
 
 # ── the elements, as measured from the rendered page at 1512x744 ───────────
 #    name,                    top, bot, left, right, colour,    AA threshold
+#    Re-measured 2026-08-25 via getClientRects() inside a 1512x744 iframe (the
+#    dev display caps at 1440, so the page is measured in a frame rather than a
+#    window — see measure.html). Two things changed with the sentence hero:
+#      - the slogan threshold moved 3.0 -> 4.5. It used to be 38px italic
+#        display type (large text) and is now 19px Lato regular, which is NOT
+#        large under WCAG (large = 24px, or 18.66px bold). Same words, stricter
+#        bar.
+#      - 'Escape Better' was added directly above the buttons in the wordmark
+#        treatment. The hero copy block is BOTTOM-anchored, so it grew upward.
 ROWS = [
- ('eyebrow',                   328, 347,  667,  850, '#FFFFFF', 4.5),
- ('wordmark (large)',          365, 433,  418, 1108, '#FFFCFA', 3.0),
- ('slogan (large)',            472, 524,  426, 1086, '#FFFCFA', 3.0),
- ('lede line 1',               542, 563,  536,  976, '#EBE0DC', 4.5),
- ('lede line 2',               572, 592,  511, 1001, '#EBE0DC', 4.5),
+ ('eyebrow',                   363, 377,  680,  837, '#FFFFFF', 4.5),
+ ('headline (large)',          396, 459,  428, 1084, '#FFFCFA', 3.0),
+ ('slogan',                    487, 510,  490, 1022, '#FFFCFA', 4.5),
+ ('lede',                      525, 546,  569,  943, '#EBE0DC', 4.5),
+ ('tagline (Escape Better)',   588, 602,  681,  836, '#FFFCFA', 4.5),
  ('App Store label (solid)',  None,None, None, None, '#F7F4F1', 4.5),
  ('Google Play label (solid)',None,None, None, None, '#2D2D2D', 4.5),
 ]
