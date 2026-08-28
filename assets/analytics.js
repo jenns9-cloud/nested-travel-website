@@ -128,16 +128,24 @@ function boot(mixpanel) {
   // Fail loudly into the status marker rather than pretending to track.
   client.get_distinct_id();
 
-  client.register({ platform: 'web', surface: 'marketing-site' });
-
+  /* Attribution goes on register(), not on the page view. It used to ride only
+     on 'Web: Page View', so breaking Store Click or Scroll Depth down by
+     referrer returned "(not set)" for every row — the one question worth asking
+     of this data (which source actually sends people to the store) could not be
+     answered. As a super property it rides every event from this page load. */
   const params = new URLSearchParams(location.search);
-  client.track('Web: Page View', {
-    page: pageName(),
-    path: location.pathname,
+  client.register({
+    platform: 'web',
+    surface: 'marketing-site',
     referrer: document.referrer || 'direct',
     utm_source: params.get('utm_source') || undefined,
     utm_medium: params.get('utm_medium') || undefined,
     utm_campaign: params.get('utm_campaign') || undefined
+  });
+
+  client.track('Web: Page View', {
+    page: pageName(),
+    path: location.pathname
   });
 
   wireClicks();
@@ -155,7 +163,15 @@ if (document.readyState === 'loading') {
    window.__ntAnalytics -> { loaded, tracking, error } */
 window.__ntAnalytics = { loaded: false, tracking: false, error: null };
 
+/* Only the live site reports. Local preview sessions (http://localhost:8899/…)
+   were landing in the production project alongside real visitors. */
+const LIVE_HOSTS = ['nestedtravel.com', 'www.nestedtravel.com'];
+if (!LIVE_HOSTS.includes(location.hostname)) {
+  window.__ntAnalytics.error = 'not the live host: ' + location.hostname;
+}
+
 try {
+  if (window.__ntAnalytics.error) throw new Error(window.__ntAnalytics.error);
   const mod = await import(SDK);
   const mixpanel = mod.default;
   window.__ntAnalytics.loaded = typeof mixpanel?.init === 'function';
