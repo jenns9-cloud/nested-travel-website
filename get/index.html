@@ -148,10 +148,18 @@
     }
     var payload = btoa(unescape(encodeURIComponent(JSON.stringify(batch))));
     var endpoint = 'https://api-js.mixpanel.com/track/?ip=0';
+    var body = 'data=' + encodeURIComponent(payload);
+
+    /* Send a Blob carrying the urlencoded content type, NOT a FormData.
+       sendBeacon(url, FormData) posts multipart/form-data, which this endpoint
+       rejects — it answers HTTP 200 with a body of "0", and a beacon cannot
+       read a response, so the failure is completely silent. Verified against
+       the live host 2026-09-04: multipart -> status 0, urlencoded -> status 1.
+       application/x-www-form-urlencoded is CORS-safelisted, so no preflight. */
     var sent = false;
     if (navigator.sendBeacon) {
-      var fd = new FormData(); fd.append('data', payload);
-      sent = navigator.sendBeacon(endpoint, fd);
+      sent = navigator.sendBeacon(endpoint,
+        new Blob([body], { type: 'application/x-www-form-urlencoded' }));
     }
     if (!sent) { new Image().src = endpoint + '&data=' + encodeURIComponent(payload); }
   } catch (e) { /* never let measurement block the redirect */ }
