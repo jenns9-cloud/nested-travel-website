@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nested Travel — Get the app</title>
+<!--
+  One link that goes straight to the right store.
+
+  Why this exists: a post says "link in bio", the bio pointed at the site, and
+  the site asked for a SECOND tap to reach a store. Over 2026-08-22..09-04
+  Instagram sent 283 visitors to the site and 11 of them reached a store — the
+  hop cost ~96% of the people who did exactly what the post asked.
+
+  Two rules here, both load-bearing:
+   1. Nothing blocks the redirect. The Mixpanel SDK is an ESM import off a CDN;
+      waiting for it would trade one hop for another. We post one beacon to
+      Mixpanel's HTTP endpoint and forward in the same tick.
+   2. It still works with no JS. The two store links below are real anchors, so
+      a blocked script degrades to a chooser rather than a dead end.
+
+  Usage: /get?src=ig_bio  — src flows into Apple's `ct` and Play's `referrer`
+  so App Store Connect and Play Console can tell your posts apart.
+-->
+<style>
+  :root { color-scheme: light; }
+  body { margin:0; min-height:100svh; display:flex; align-items:center; justify-content:center;
+         background:#0D1826; color:#FFFCFA; text-align:center;
+         font-family:'Lato',system-ui,-apple-system,sans-serif; padding:32px; }
+  .wrap { max-width:340px; width:100%; }
+  h1 { font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-size:30px;
+       line-height:1.2; margin:0 0 8px; }
+  p { font-size:15px; line-height:1.5; opacity:.75; margin:0 0 28px; }
+  a.cta { display:block; padding:13px 24px; min-height:44px; box-sizing:border-box;
+          border-radius:999px; text-decoration:none; font-size:15px; letter-spacing:.2px;
+          border:1px solid #FFFCFA; margin-bottom:10px; }
+  a.solid { background:#FFFCFA; color:#0D1826; }
+  a.fill  { color:#FFFCFA; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Get Nested Travel</h1>
+    <p>Taking you to your app store&hellip;</p>
+    <a class="cta solid" id="ios"     href="https://apps.apple.com/app/apple-store/id6758023174?pt=128414920&amp;ct=get&amp;mt=8">Get it free &mdash; App Store</a>
+    <a class="cta fill"  id="android" href="https://play.google.com/store/apps/details?id=com.nestedtravel.app&amp;referrer=utm_source%3Dnestedtravel.com%26utm_medium%3Dshortlink%26utm_campaign%3Dget">Get it free &mdash; Google Play</a>
+  </div>
+<script>
+(function () {
+  var TOKEN = '1ff8234e791a39eab221d72771b654a0';
+  var APPLE_ID = '6758023174', APPLE_PT = '128414920';
+  var PLAY_PKG = 'com.nestedtravel.app';
+  var LIVE_HOSTS = ['nestedtravel.com', 'www.nestedtravel.com'];
+
+  /* Apple caps `ct` at 40 chars; keep both stores on the same tag so the two
+     consoles can be read side by side. */
+  function cleanSrc(raw) {
+    return (raw || 'direct').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40) || 'direct';
+  }
+
+  /* iPadOS 13+ reports a Mac UA in desktop-mode Safari; touch points is the
+     only reliable tell. Exposed for testing — see __ntTarget below. */
+  function platformOf(ua, maxTouchPoints) {
+    if (/android/i.test(ua)) return 'android';
+    if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+    if (/macintosh/i.test(ua) && maxTouchPoints > 1) return 'ios';
+    return 'other';
+  }
+
+  function storeUrl(platform, src) {
+    if (platform === 'ios') {
+      return 'https://apps.apple.com/app/apple-store/id' + APPLE_ID +
+             '?pt=' + APPLE_PT + '&ct=' + encodeURIComponent(src) + '&mt=8';
+    }
+    if (platform === 'android') {
+      var ref = encodeURIComponent(
+        'utm_source=nestedtravel.com&utm_medium=shortlink&utm_campaign=' + src);
+      return 'https://play.google.com/store/apps/details?id=' + PLAY_PKG + '&referrer=' + ref;
+    }
+    return null;
+  }
+
+  window.__ntTarget = function (ua, touch, src) {
+    var p = platformOf(ua, touch);
+    return { platform: p, url: storeUrl(p, cleanSrc(src)) };
+  };
+
+  var params = new URLSearchParams(location.search);
+  var src = cleanSrc(params.get('src'));
+  var platform = platformOf(navigator.userAgent, navigator.maxTouchPoints);
+  var url = storeUrl(platform, src);
+
+  /* Keep the visible links in step with the tag, so the no-JS/desktop chooser
+     is attributed too rather than reporting a bare 'get'. */
+  var ios = document.getElementById('ios'), and = document.getElementById('android');
+  if (ios) ios.href = storeUrl('ios', src);
+  if (and) and.href = storeUrl('android', src);
+  if (!url) document.querySelector('p').textContent = 'Choose your store:';
+
+  /* Only the live site reports — mirrors assets/analytics.js so local preview
+     never lands in the production project. */
+  if (LIVE_HOSTS.indexOf(location.hostname) === -1) { if (url) location.replace(url); return; }
+
+  /* Reuse the site's Mixpanel identity when the visitor already has one, so a
+     person who browsed the site and later used this link is one user, not two. */
+  function distinctId() {
+    try {
+      var raw = localStorage.getItem('mp_' + TOKEN + '_web');
+      var id = raw && JSON.parse(raw).distinct_id;
+      if (id) return id;
+      var own = localStorage.getItem('nt_get_did');
+      if (own) return own;
+      var made = '$device:' + (crypto.randomUUID ? crypto.randomUUID()
+                 : String(Date.now()) + Math.random().toString(16).slice(2));
+      localStorage.setItem('nt_get_did', made);
+      return made;
+    } catch (e) { return '$device:nostorage'; }
+  }
+
+  /* One beacon, both events, then go. `Web: Page View` gives the denominator —
+     without it a failed redirect is invisible. sendBeacon survives the
+     navigation; the img fallback covers browsers that block it. */
+  try {
+    var common = {
+      token: TOKEN, distinct_id: distinctId(), src: src, page: 'Get',
+      platform: 'web', surface: 'marketing-site',
+      referrer: document.referrer || 'direct',
+      utm_source: params.get('utm_source') || undefined,
+      utm_medium: params.get('utm_medium') || undefined,
+      utm_campaign: params.get('utm_campaign') || undefined
+    };
+    function merge(extra) {
+      var o = {}, k;
+      for (k in common) if (common[k] !== undefined) o[k] = common[k];
+      for (k in extra) o[k] = extra[k];
+      return o;
+    }
+    var batch = [
+      { event: 'Web: Page View', properties: merge({ path: location.pathname }) }
+    ];
+    if (url) {
+      batch.push({ event: 'Web: Store Click', properties: merge({
+        store: platform === 'ios' ? 'App Store' : 'Google Play',
+        placement: 'get_redirect',
+        label: 'shortlink'
+      })});
+    }
+    var payload = btoa(unescape(encodeURIComponent(JSON.stringify(batch))));
+    var endpoint = 'https://api-js.mixpanel.com/track/?ip=0';
+    var sent = false;
+    if (navigator.sendBeacon) {
+      var fd = new FormData(); fd.append('data', payload);
+      sent = navigator.sendBeacon(endpoint, fd);
+    }
+    if (!sent) { new Image().src = endpoint + '&data=' + encodeURIComponent(payload); }
+  } catch (e) { /* never let measurement block the redirect */ }
+
+  if (url) location.replace(url);
+})();
+</script>
+</body>
+</html>
