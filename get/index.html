@@ -68,6 +68,38 @@
     return 'other';
   }
 
+  /* Device detail. The site's pages get this free from the Mixpanel SDK, but
+     this page never loads the SDK (it would delay the redirect), so nothing was
+     stamped and every /get event landed with no $os at all — you could only
+     infer the platform from which store it forwarded to. Set them by hand,
+     using the same property names the SDK uses so /get rows sit alongside the
+     rest of the site's data. */
+  function browserOf(ua) {
+    if (/Instagram/i.test(ua)) return 'Instagram In-App';
+    if (/BytedanceWebview|musical_ly|TikTok/i.test(ua)) return 'TikTok In-App';
+    if (/FBAN|FBAV/i.test(ua)) return 'Facebook In-App';
+    if (/CriOS/i.test(ua)) return 'Chrome iOS';
+    if (/EdgiOS|Edg\//i.test(ua)) return 'Edge';
+    if (/FxiOS|Firefox/i.test(ua)) return 'Firefox';
+    if (/Chrome/i.test(ua)) return 'Chrome';
+    if (/Safari/i.test(ua)) return 'Safari';
+    return 'Other';
+  }
+  function osOf(platform, ua) {
+    if (platform === 'ios') return 'iOS';
+    if (platform === 'android') return 'Android';
+    if (/Windows/i.test(ua)) return 'Windows';
+    if (/Mac OS X/i.test(ua)) return 'Mac OS X';
+    if (/Linux/i.test(ua)) return 'Linux';
+    return 'Other';
+  }
+  function deviceOf(platform, ua) {
+    if (/iPad/i.test(ua)) return 'iPad';
+    if (platform === 'ios') return 'iPhone';
+    if (platform === 'android') return 'Android';
+    return 'desktop';
+  }
+
   function storeUrl(platform, src) {
     if (platform === 'ios') {
       return 'https://apps.apple.com/app/apple-store/id' + APPLE_ID +
@@ -122,10 +154,26 @@
      without it a failed redirect is invisible. sendBeacon survives the
      navigation; the img fallback covers browsers that block it. */
   try {
+    var ua = navigator.userAgent || '';
+    /* One id per page load; each event appends its own suffix below. Mixpanel
+       dedupes on $insert_id, so a beacon delivered twice is stored once. */
+    var loadId = 'get-' + (crypto.randomUUID ? crypto.randomUUID()
+                  : String(Date.now()) + Math.random().toString(16).slice(2));
     var common = {
       token: TOKEN, distinct_id: distinctId(), src: src, page: 'Get',
       platform: 'web', surface: 'marketing-site',
       referrer: document.referrer || 'direct',
+      /* Send the tap time. Without it Mixpanel stamps arrival time, and an
+         in-app browser that suspends and flushes its queued beacons together
+         lands them all on one second — which is exactly what happened on
+         2026-09-05, 15 events sharing a timestamp. Seconds, per the /track
+         contract. */
+      time: Math.floor(Date.now() / 1000),
+      $os: osOf(platform, ua),
+      $browser: browserOf(ua),
+      $device: deviceOf(platform, ua),
+      $screen_width: (screen && screen.width) || undefined,
+      $screen_height: (screen && screen.height) || undefined,
       utm_source: params.get('utm_source') || undefined,
       utm_medium: params.get('utm_medium') || undefined,
       utm_campaign: params.get('utm_campaign') || undefined
@@ -137,13 +185,15 @@
       return o;
     }
     var batch = [
-      { event: 'Web: Page View', properties: merge({ path: location.pathname }) }
+      { event: 'Web: Page View', properties: merge({
+        path: location.pathname, $insert_id: loadId + '-pv' }) }
     ];
     if (url) {
       batch.push({ event: 'Web: Store Click', properties: merge({
         store: platform === 'ios' ? 'App Store' : 'Google Play',
         placement: 'get_redirect',
-        label: 'shortlink'
+        label: 'shortlink',
+        $insert_id: loadId + '-sc'
       })});
     }
     var payload = btoa(unescape(encodeURIComponent(JSON.stringify(batch))));
