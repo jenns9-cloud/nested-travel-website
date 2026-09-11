@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nested Travel — Email confirmed</title>
+<!--
+  Where the signup confirmation link lands.
+
+  Why this exists: Supabase redirects to `site_url` after it verifies the
+  confirmation token, and site_url was still 'http://localhost:3000'. The
+  account really was confirmed and then the phone tried to open localhost and
+  failed — so every person who did what the email asked hit an error page as
+  their first experience of the product. Of four real email signups between
+  2026-06 and 2026-09, two confirmed and never signed in.
+
+  The redirect happens AFTER server-side verification, so by the time anyone
+  reads this page their email is already confirmed. This page's whole job is to
+  say so and point back at the app.
+
+  Two rules, same as /get:
+   1. No auto-launch. Opening nestedtravel:// on load shows an OS error dialog
+      when the app is not installed; the deep link is a button the visitor taps.
+   2. It works with no JS. The links below are real anchors.
+-->
+<style>
+  :root { color-scheme: light; }
+  body { margin:0; min-height:100svh; display:flex; align-items:center; justify-content:center;
+         background:#0D1826; color:#FFFCFA; text-align:center;
+         font-family:'Lato',system-ui,-apple-system,sans-serif; padding:32px; }
+  .wrap { max-width:340px; width:100%; }
+  .mark { width:44px; height:44px; border-radius:50%; border:1px solid #EFC5C5;
+          display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+          font-size:20px; color:#EFC5C5; line-height:1; }
+  h1 { font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-size:30px;
+       line-height:1.2; margin:0 0 8px; }
+  p { font-size:15px; line-height:1.5; opacity:.75; margin:0 0 28px; }
+  a.cta { display:block; padding:13px 24px; min-height:44px; box-sizing:border-box;
+          border-radius:999px; text-decoration:none; font-size:15px; letter-spacing:.2px;
+          border:1px solid #FFFCFA; margin-bottom:10px; }
+  a.solid { background:#FFFCFA; color:#0D1826; }
+  .foot { font-size:13px; opacity:.55; margin:20px 0 0; }
+  .foot a { color:#EFC5C5; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="mark" aria-hidden="true">&check;</div>
+    <h1>Email confirmed</h1>
+    <p>You&rsquo;re all set. Open Nested Travel and sign in to start planning.</p>
+    <a class="cta solid" id="open" href="nestedtravel://">Open Nested Travel</a>
+    <p class="foot">Don&rsquo;t have the app on this device?
+      <a href="/get?src=confirm_email">Download it here</a>.</p>
+  </div>
+<script>
+(function () {
+  var TOKEN = '1ff8234e791a39eab221d72771b654a0';
+  var LIVE_HOSTS = ['nestedtravel.com', 'www.nestedtravel.com'];
+
+  /* Same device-stamping as /get: this page never loads the Mixpanel SDK, so
+     nothing would set $os/$browser and these rows would sit in the data with no
+     platform at all. Same property names the SDK uses, so they line up with the
+     rest of the site. */
+  function browserOf(ua) {
+    if (/Instagram/i.test(ua)) return 'Instagram In-App';
+    if (/BytedanceWebview|musical_ly|TikTok/i.test(ua)) return 'TikTok In-App';
+    if (/FBAN|FBAV/i.test(ua)) return 'Facebook In-App';
+    if (/CriOS/i.test(ua)) return 'Chrome iOS';
+    if (/EdgiOS|Edg\//i.test(ua)) return 'Edge';
+    if (/FxiOS|Firefox/i.test(ua)) return 'Firefox';
+    if (/Chrome/i.test(ua)) return 'Chrome';
+    if (/Safari/i.test(ua)) return 'Safari';
+    return 'Other';
+  }
+  function platformOf(ua, touch) {
+    if (/android/i.test(ua)) return 'android';
+    if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+    if (/macintosh/i.test(ua) && touch > 1) return 'ios';
+    return 'other';
+  }
+  function osOf(p, ua) {
+    if (p === 'ios') return 'iOS';
+    if (p === 'android') return 'Android';
+    if (/Windows/i.test(ua)) return 'Windows';
+    if (/Mac OS X/i.test(ua)) return 'Mac OS X';
+    if (/Linux/i.test(ua)) return 'Linux';
+    return 'Other';
+  }
+  function deviceOf(p, ua) {
+    if (/iPad/i.test(ua)) return 'iPad';
+    if (p === 'ios') return 'iPhone';
+    if (p === 'android') return 'Android';
+    return 'desktop';
+  }
+
+  if (LIVE_HOSTS.indexOf(location.hostname) === -1) return;
+
+  /* Reuse the site's Mixpanel identity when there is one, so someone who
+     browsed the site and later confirmed an email is one person, not two. */
+  function distinctId() {
+    try {
+      var raw = localStorage.getItem('mp_' + TOKEN + '_web');
+      var id = raw && JSON.parse(raw).distinct_id;
+      if (id) return id;
+      var own = localStorage.getItem('nt_get_did');
+      if (own) return own;
+      var made = '$device:' + (crypto.randomUUID ? crypto.randomUUID()
+                 : String(Date.now()) + Math.random().toString(16).slice(2));
+      localStorage.setItem('nt_get_did', made);
+      return made;
+    } catch (e) { return '$device:nostorage'; }
+  }
+
+  var ua = navigator.userAgent || '';
+  var platform = platformOf(ua, navigator.maxTouchPoints);
+  var loadId = 'confirmed-' + (crypto.randomUUID ? crypto.randomUUID()
+                : String(Date.now()) + Math.random().toString(16).slice(2));
+  var common = {
+    token: TOKEN, distinct_id: distinctId(), page: 'Confirmed',
+    platform: 'web', surface: 'marketing-site',
+    referrer: document.referrer || 'direct',
+    time: Math.floor(Date.now() / 1000),
+    $os: osOf(platform, ua), $browser: browserOf(ua), $device: deviceOf(platform, ua),
+    $screen_width: (screen && screen.width) || undefined,
+    $screen_height: (screen && screen.height) || undefined
+  };
+  function merge(extra) {
+    var o = {}, k;
+    for (k in common) if (common[k] !== undefined) o[k] = common[k];
+    for (k in extra) o[k] = extra[k];
+    return o;
+  }
+
+  /* Blob carrying the urlencoded content type, never FormData — sendBeacon with
+     a FormData posts multipart, which /track rejects with HTTP 200 and a body of
+     "0". A beacon cannot read a response, so that failure is silent. */
+  function send(batch) {
+    try {
+      var payload = btoa(unescape(encodeURIComponent(JSON.stringify(batch))));
+      var endpoint = 'https://api-js.mixpanel.com/track/?ip=0';
+      var body = 'data=' + encodeURIComponent(payload);
+      var sent = false;
+      if (navigator.sendBeacon) {
+        sent = navigator.sendBeacon(endpoint,
+          new Blob([body], { type: 'application/x-www-form-urlencoded' }));
+      }
+      if (!sent) { new Image().src = endpoint + '&data=' + encodeURIComponent(payload); }
+    } catch (e) { /* measurement must never break the page */ }
+  }
+
+  /* The denominator: how many people actually complete email confirmation.
+     Nothing has ever measured this step — it was invisible on both sides. */
+  send([{ event: 'Web: Page View', properties: merge({
+    path: location.pathname, $insert_id: loadId + '-pv' }) }]);
+
+  var open = document.getElementById('open');
+  if (open) {
+    open.addEventListener('click', function () {
+      send([{ event: 'Web: App Open Tapped', properties: merge({
+        placement: 'confirmed', $insert_id: loadId + '-open' }) }]);
+    });
+  }
+})();
+</script>
+</body>
+</html>
