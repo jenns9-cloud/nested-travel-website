@@ -359,7 +359,11 @@
       line-height: 1;
       margin-bottom: 8px;
     }
-    .plan .period { font-size: 13px; color: var(--ink-soft); margin-bottom: 30px; }
+    /* Both cards run price / period / alt, so the two feature lists start at the
+       same height. Pro needs the third line for the monthly alternative; Free
+       carries one too rather than a spacer, so the grid stays honest. */
+    .plan .period { font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
+    .plan .alt { font-size: 13px; color: var(--ink-soft); margin-bottom: 30px; }
     .plan ul { list-style: none; }
     .plan li { font-size: 15px; color: var(--ink-soft); padding-left: 22px; position: relative; margin-bottom: 12px; }
     .plan li::before {
@@ -589,6 +593,7 @@
             <p class="tier">Free</p>
             <p class="price">$0</p>
             <p class="period">Forever</p>
+            <p class="alt">No card required</p>
             <ul>
               <li>One active trip</li>
               <li>Up to fifteen saved places</li>
@@ -598,8 +603,9 @@
           </div>
           <div class="plan pro">
             <p class="tier">Pro</p>
-            <p class="price">$6.99</p>
-            <p class="period">Per month</p>
+            <p class="price">$39.99</p>
+            <p class="period">Per year</p>
+            <p class="alt">$3.33 a month, billed yearly &middot; or $6.99 monthly</p>
             <ul>
               <li>Unlimited trips and saved places</li>
               <li>Full AI trip builder</li>
