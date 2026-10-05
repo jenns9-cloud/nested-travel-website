@@ -214,7 +214,37 @@
     if (!sent) { new Image().src = endpoint + '&data=' + encodeURIComponent(payload); }
   } catch (e) { /* never let measurement block the redirect */ }
 
-  if (url) location.replace(url);
+  /* ChatGPT ads: OpenAI appends `oppref` to the ad's landing URL. Report the
+     store click to its Conversions API through our edge function (the key
+     can't live in a page, and the OpenAI pixel would delay the redirect).
+     Only ad clicks carry an oppref, so IG/TikTok traffic never sends this.
+     text/plain is CORS-safelisted — no preflight, so the beacon survives the
+     navigation. The event id matches Mixpanel's Store Click insert id. */
+  var oppref = params.get('oppref');
+  function reportAdClick() {
+    if (!oppref) return;
+    try {
+      var adBody = JSON.stringify({
+        event_id: (typeof loadId === 'string' ? loadId : 'get-' + Date.now()) + '-sc',
+        oppref: oppref,
+        source_url: location.href,
+        timestamp_ms: Date.now()
+      });
+      navigator.sendBeacon && navigator.sendBeacon(
+        'https://paunolxlafszdjvijgcn.supabase.co/functions/v1/openai-ads-forward',
+        new Blob([adBody], { type: 'text/plain' }));
+    } catch (e) { /* never let measurement block the redirect */ }
+  }
+
+  if (url) { reportAdClick(); location.replace(url); return; }
+
+  /* Desktop: no auto-redirect, so the conversion is the tap on a store button. */
+  var reported = false;
+  [ios, and].forEach(function (a) {
+    if (a) a.addEventListener('click', function () {
+      if (!reported) { reported = true; reportAdClick(); }
+    });
+  });
 })();
 </script>
 </body>
